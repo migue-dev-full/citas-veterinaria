@@ -1,20 +1,24 @@
 // Definimos variables
-const nombreInput = document.querySelector('#nombre');
-const vueloInput = document.querySelector('#vuelo');
-const telefonoInput = document.querySelector('#telefono');
-const fechaInput = document.querySelector('#fecha');
-const horaInput = document.querySelector('#hora');
-const aerolineaInput = document.querySelector('#aerolinea');
+const nombre = document.querySelector('#nombre');
+const viaje = document.querySelector('#ida', '#vuelta');
+const telefono = document.querySelector('#telefono');
+const idP = document.querySelector("#idP");
+const fechaIda = document.querySelector('#fechaIda');
+const fechaRegreso = document.querySelector('#fechaRegreso');
+const ida = document.querySelector('#ida');
+const vuelta = document.querySelector('#vuelta');
+const origen = document.querySelector('#paisOrigen');
+const destino = document.querySelector('#paisDestino');
 const formulario = document.querySelector('#nueva-reserva');
 const contenedorReservas = document.querySelector('#reservas');
-let editar 
+let editar = false;
 
 class reservas {
     constructor(){
         this.reservas = []  // this es un apuntador
     }
 
-    // agregar una cita
+    // agregar una reserva
     agregarReserva(reserva){
         this.reservas = [...this.reservas,reserva]
         console.log(this.reservas)
@@ -61,34 +65,64 @@ class useri{
 
     //imprimiendo citas del arreglo
     imprimirReservas({reservas}){
+        console.log(reservas);
+        
+
     this.limpiarHTML()
     reservas.forEach(i => {
-        const {nombre, vuelo, telefono, fecha, hora, aerolinea, id} = i 
+        console.log(i);
+        
+        const {id, nombre, idP, telefono, origen, destino, viaje, fechaIda, fechaRegreso} = i 
         //creando html
         const divReserva = document.createElement('div')
-        divReserva.classList.add('reserva', 'p-3')
-
+        divReserva.classList.add('reserva', 'p-3', 'mb-3', 'divRes')
+        
         //agregar textos
         const nombreTexto = document.createElement('h2')
-        nombreTexto.classList.add('card-title', 'font-weight-bolder')
-        nombreTexto.textContent = nombre
+        nombreTexto.classList.add('card-title', 'font-weight-bolder', 'mb-3', 'nombre-reserva')
+        nombreTexto.textContent = 'Nombre:' + nombre
+       
 
-        const vueloTexto = document.createElement('p')
-        vueloTexto.textContent = 'Vuelo: ' + vuelo
+        const idPTexto = document.createElement('p')
+        idPTexto.classList.add('idsStyle')
+        idPTexto.textContent = 'Id: ' + idP
+     
 
         const telefonoTexto = document.createElement('p')
+        telefonoTexto.classList.add('telStyle')
         telefonoTexto.textContent = 'Telefono: ' + telefono
+     
 
-        const fechaTexto = document.createElement('p')
-        fechaTexto.textContent = 'Fecha: ' + fecha
+        const origenTexto = document.createElement('p')
+        origenTexto.classList.add('paisOrigen', 'mb-3');
+        origenTexto.textContent = 'Origen: ' + origen
+     
 
-        const horaTexto = document.createElement('p')
-        horaTexto.textContent = 'Hora: ' + hora
+        const destinoTexto = document.createElement('p')
+        destinoTexto.classList.add('paisOrigen');
+        destinoTexto.textContent = 'Destino: ' + destino
 
-        const aerolineaTexto = document.createElement('p')
-        aerolineaTexto.textContent = 'Aerolinea: ' + aerolinea
 
+        const viajeTexto = document.createElement('p')
+        viajeTexto.classList.add('viajeText', 'justify-content-center', 'mt-3', 'mb-3');
+        viajeTexto.textContent = 'Tipo de viaje: ' + viaje
+        
+        
+
+
+        const fechaIdaTexto = document.createElement('p')
+        fechaIdaTexto.classList.add('paisIgual','p-1', 'mb-1');
+        fechaIdaTexto.textContent = 'Salida: ' + fechaIda
+
+        const fechaRegresoTexto = document.createElement('p')
+        fechaRegresoTexto.classList.add('paisIgual','p-1');
+        fechaRegresoTexto.textContent = 'FechaRegreso: ' + fechaRegreso
+        
+        
+        
         divReserva.dataset.id = id
+        
+
 
         //agregando boton de eliminar a la cita agendada
         const btnEliminar = document.createElement('button')
@@ -112,11 +146,14 @@ class useri{
 
         //esto para imprimir los datos de la cita agendada
         divReserva.appendChild(telefonoTexto)
-        divReserva.appendChild(vueloTexto)
+        divReserva.appendChild(idPTexto)
         divReserva.appendChild(nombreTexto)
-        divReserva.appendChild(fechaTexto)
-        divReserva.appendChild(horaTexto)
-        divReserva.appendChild(aerolineaTexto)
+        divReserva.appendChild(origenTexto)
+        divReserva.appendChild(destinoTexto)
+        divReserva.appendChild(viajeTexto)
+        divReserva.appendChild(fechaIdaTexto)
+        divReserva.appendChild(fechaRegresoTexto)
+
         //Imprimiendo los botones de editar y eliminar
         divReserva.appendChild(btnEliminar)
         divReserva.appendChild(btnEditar)
@@ -137,13 +174,20 @@ class useri{
 eventos() 
 //recuerda inicializar
 function eventos(){
-    nombreInput.addEventListener('input', datosReservas)
-    vueloInput.addEventListener('input', datosReservas)
-    telefonoInput.addEventListener('input', datosReservas)
-    fechaInput.addEventListener('input', datosReservas)
-    horaInput.addEventListener('input', datosReservas)
-    aerolineaInput.addEventListener('input', datosReservas)
+    nombre.addEventListener('input', datosReservas)
+    telefono.addEventListener('input', datosReservas)
+    fechaIda.addEventListener('input', datosReservas)
+    fechaRegreso.addEventListener('input', datosReservas)
+    viaje.addEventListener("change", datosReservas)
+    ida.addEventListener('change', datosReservas)
+    vuelta.addEventListener('change', datosReservas)
+    origen.addEventListener('change', datosReservas)
+    destino.addEventListener('change', datosReservas)
+    idP.addEventListener("input", datosReservas)
     formulario.addEventListener('submit', nuevaReserva)
+    origen.addEventListener('change', validarPais);
+    destino.addEventListener('change', validarPais);
+   
     
 }
 
@@ -151,11 +195,14 @@ function eventos(){
 
 const reservasObj ={
     nombre: '',
-    vuelo: '',
+    idP: '',
     telefono: '',
-    fecha: '',
-    hora: '',
-    aerolinea: ''
+    origen: '',
+    destino: '',
+    viaje: '',
+    fechaIda: '',
+    fechaRegreso: ''
+
 }
 
 
@@ -166,54 +213,103 @@ const ui = new useri()
 function datosReservas(e){
     //console.log(e.target.name); //name para evr si estas capturado el mismo elemento
     reservasObj[e.target.name] = e.target.value //.value para que agregue el value
-     console.log(reservasObj);  //pruebaa que guarda el dato en la propiedad del obj que quieres
-}
 
+    if (e.target.name === 'ida' || e.target.name === 'vuelta') {
+        reservasObj.viaje = e.target.value; // Guardar 'Solo ida' o 'Ida y vuelta'
+    }
+
+
+     console.log(reservasObj);  //pruebaa que guarda el dato en la propiedad del obj que quieres
+
+
+    }
+
+function validarPais(origen, destino) {
+        if (reservasObj.origen === reservasObj.destino){
+            ui.imprimirAlerta('El pais de origen y el pais destino no pueden ser iguales', 'error');
+            return true;
+        }
+        return false;
+    }
+
+
+        
 
 function nuevaReserva(e){
     //validar campos vacios y agregar una nueva cita
     e.preventDefault()
+    datosReservas(e)
+    
 
+    if(validarPais()){
+        return;
+    }
+
+
+    
     // extraccion de la info
-    const {nombre, vuelo, telefono, fecha, hora, aerolinea} = 
+    const {nombre, idP, telefono, origen, destino, ida, vuelta, viaje, fechaIda, fechaRegreso} = 
     reservasObj
 
     // validar
-    if(nombre==='' || vuelo==='' || telefono==='' ||
-    fecha===''|| hora==='' || aerolinea===''){
+    if(nombre==='' || idP==='' || telefono==='' ||
+    origen===''|| destino==='' || ida===''  || vuelta==='' || viaje===''  || fechaIda===''  ){
             //console.log('Todos los campos son obligatorios')
             ui.imprimirAlerta('Todos los campos son obligatorios', 'error')
+
         }else if(editar){
             //editar
-            //console.log('editar')
-            editar = false
-            formulario.querySelector('button[type=submit]').textContent = 'Crear Reserva'
+            console.log(reservasObj)
+            validarPais()
+            
+            formulario.querySelector('button[type=submit]').textContent = 'Guardar'
             administrarReserva.editarReserva({...reservasObj})
             ui.imprimirAlerta('Se ha actualizado la reserva correctamente')
+            editar = false
             ui.imprimirReservas(administrarReserva)
         }else{
             // console.log('campos llenos')
-            reservasObj.id = Date.now()
-             console.log(reservasObj);
             
+            reservasObj.id = Date.now()
+            console.log(reservasObj);
+           
+
+                // Crear objetos Date para las fechas
+            const fechaIdaDate = new Date(fechaIda);
+            const fechaRegresoDate = new Date(fechaRegreso);
+
+            // Validar que fecha de ida no sea posterior a fecha de regreso
+            if (fechaIdaDate > fechaRegresoDate) {
+                ui.imprimirAlerta('La fecha de ida no puede ser posterior a la fecha de regreso', 'error');
+                return; // Detener la creación de la reserva
+            }
+            
+
+
+
+
             administrarReserva.agregarReserva({...reservasObj})
             ui.imprimirAlerta('Se ha agendado su reserva satisfactoriamente')
-            ui.imprimirReservas(administrarReserva)
     }
-
+    ui.imprimirReservas({reservas: administrarReserva.reservas})
     formulario.reset()
-    reiniciarObjeto()
     console.log(reservasObj);
+    reiniciarObjeto()
+    
+  
+    // console.log(reservasObj);
     
 
     function reiniciarObjeto(){
-        reservasObj.nombre = ''
-        reservasObj.vuelo = ''
-        reservasObj.telefono = ''
-        reservasObj.fecha = ''
-        reservasObj.hora = ''
-        reservasObj.aerolinea = ''
-        reservasObj.id = ''
+    reservasObj.nombre = '';
+    reservasObj.idP = '';
+    reservasObj.telefono = '';
+    reservasObj.origen = '';
+    reservasObj.destino = '';
+    reservasObj.viaje = '';
+    reservasObj.fechaIda = '';
+    reservasObj.fechaRegreso = '';
+    reservasObj.id = '';
     }
 }
 
@@ -224,32 +320,84 @@ function eliminarReserva(id){
     // mensaje de lo que se ha hecho
     ui.imprimirAlerta('La reserva se ha eliminado correctamente')
     //eliminando
-    ui.imprimirReservas(administrarReserva)
+    ui.imprimirReservas({reservas: administrarReserva.reservas})
 }
 
 
 function cargarEdicion(reservaObjeto){
-    const {nombre, vuelo, telefono, fecha, hora, aerolinea, id} = reservaObjeto
+    const {id, nombre: nombreReserva, idP: idPReserva, telefono: telefonoReserva, origen: origenReserva, destino: destinoReserva, viaje: viajeReserva , fechaIda: fechaIdaReserva, fechaRegreso: fechaRegresoReserva} = reservaObjeto
 
-    //llenar los inputs con la informacion del div donde estoy editando
-    nombreInput.value = nombre
-    vueloInput.value = vuelo
-    telefonoInput.value = telefono
-    fechaInput.value = fecha
-    horaInput.value = hora
-    aerolineaInput.value = aerolinea
+    editar = true;
+    //console.log(citasObj);
+    formulario.querySelector('button[type=submit]').textContent = 'Actualizar'
+    console.log(reservaObjeto);
+    
+    
+     // Llenar los inputs con la informacion del div donde estoy editando
+     nombre.value = nombreReserva;
+     idP.value = idPReserva;
+     telefono.value = telefonoReserva;
+     origen.value = origenReserva;
+     destino.value = destinoReserva;
+     viaje.value = viajeReserva;
+     fechaIda.value = fechaIdaReserva;
+     fechaRegreso.value = fechaRegresoReserva;
+ 
+     
 
     //llenar el objeto
-    reservasObj.nombre = nombre
-    reservasObj.vuelo = vuelo
-    reservasObj.fecha = fecha
-    reservasObj.hora = hora
-    reservasObj.aerolinea = aerolinea
-    reservasObj.telefono = telefono
-    reservasObj.id = id
+    reservasObj.nombre = nombreReserva
+    reservasObj.idP = idPReserva
+    reservasObj.telefono = telefonoReserva
+    reservasObj.origen = origenReserva
+    reservasObj.destino = destinoReserva
+    reservasObj.viaje = viajeReserva
+    reservasObj.fechaIda = fechaIdaReserva
+    // reservasObj.fechaRegreso = fechaRegresoReserva
 
-    formulario.querySelector('button[type=submit]').textContent = 'Actualizar'
 
-    //console.log(citasObj);
-    editar = true
+    if (viajeReserva === ida) {
+        reservasObj.fechaRegreso = ""; // Eliminar valor si es 'solo ida'
+    } else if (viajeReserva === vuelta){
+        reservasObj.fechaRegreso = fechaRegresoReserva;
+    }
+
+
+    reservasObj.id = id;
+  
+    ui.imprimirReservas({ reservas: administrarReserva.reservas });
+     
 }
+
+// Obtener la fecha actual 
+const fechaActual = new Date().toISOString().slice(0, 10);
+
+fechaIda.setAttribute('min', fechaActual);
+
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    validarPais();
+   
+});
+
+
+
+    
+
+let fechaRegresoDiv = document.getElementById("fechaRegresoDiv");
+let tipo2 = document.getElementById("ida")
+tipo2.addEventListener("click", (event) => {
+    fechaRegresoDiv = document.getElementById("fechaRegresoDiv");
+    fechaRegresoDiv.style.display = "none";
+    fechaRegreso.required = false;
+    fechaRegreso.value = "";
+})
+
+let tipo1 = document.getElementById("vuelta")
+
+tipo1.addEventListener("click", (event) => {
+    fechaRegresoDiv.style.display = "block";
+    fechaRegreso.required = true;
+})
+

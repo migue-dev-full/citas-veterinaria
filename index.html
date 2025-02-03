@@ -17,15 +17,15 @@
                 <form id="nueva-reserva">
                     <legend class="mb-4">Datos de usuario</legend>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-lg-4 col-form-label">Nombre:</label>
+                        <label class="col-sm-4 col-lg-4 col-form-label">Nombre completo:</label>
                         <div class="col-sm-8 col-lg-8">
-                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre de Pasajero">
+                            <input type="texto" id="nombre" name="nombre" labe class="form-control" placeholder="Nombre de Pasajero" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-lg-4 col-form-label">Vuelo:</label>
+                        <label class="col-sm-4 col-lg-4 col-form-label">ID:</label>
                         <div class="col-sm-8 col-lg-8">
-                            <input type="text" id="vuelo" name="vuelo" class="form-control"  placeholder="Numero de vuelo">
+                            <input type="texto" id="idP" name="idP" class="form-control"  placeholder="Numero de identificacion">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -35,25 +35,76 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-4 col-lg-4 col-form-label">Fecha:</label>
+                        <label  class="col-sm-4 col-lg-4 col-form-label" >Origen:</label>
                         <div class="col-sm-8 col-lg-8">
-                            <input type="date" id="fecha" name="fecha" class="form-control">
+                                <select
+                                    class="form-select form-select-lg"
+                                    name="origen"
+                                    id="paisOrigen"
+                                >
+                                    <option selected>Select one</option>
+                                    <option value="VE">Venezuela</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="ES">España</option>
+                                    <option value="US">Estados Unidos</option>
+                                </select required>
+                        </div>
+                    </div>
+                    <div  class="form-group row">
+                        <label  class="col-sm-4 col-lg-4 col-form-label" >Destino:</label>
+                        <div class="col-sm-8 col-lg-8">
+                                <select
+                                    class="form-select form-select-lg"
+                                    name="destino"
+                                    id="paisDestino"
+                                >
+                                    <option selected>Select one</option>
+                                    <option value="VE">Venezuela</option>
+                                    <option value="CL">Chile</option>
+                                    <option value="ES">España</option>
+                                    <option value="US">Estados Unidos</option>
+                                </select>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-4 col-lg-4 col-form-label">Hora:</label>
+                    <div class="form-group row" >
+                        <label class="col-sm-4 col-lg-4 col-form-label ">Solo ida</label>
                         <div class="col-sm-8 col-lg-8">
-                            <input type="time" id="hora" name="hora" class="form-control">
+                            <input type="radio"  id="ida" name="viaje" class="type" value="Solo ida">
+                        </div>
+                        <label class="col-sm-4 col-lg-4 col-form-label">Ida y vuelta</label>
+                        <div  class="col-sm-8 col-lg-8">
+                            <input type="radio" id="vuelta" id="contenedor-destino" name="viaje" class="type" value="Ida y vuelta">
+                        </div>
+                        
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-lg-4 col-form-label">Fecha ida:</label>
+                        <div class="col-sm-8 col-lg-8">
+                            <input type="date" id="fechaIda" name="fechaIda"  class="form-control">
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div id="fechaRegresoDiv" class="form-group row">
+                        <label class="col-sm-4 col-lg-4 col-form-label">Fecha Regreso:</label>
+                        <div class="col-sm-8 col-lg-8">
+                            <input type="date" id="fechaRegreso" name="fechaRegreso" class="form-control">
+                        </div>
+                    </div> 
+
+                    <!-- <div class="form-group row">
                         <label class="col-sm-4 col-lg-4 col-form-label">Aerolinea:</label>
                         <div class="col-sm-8 col-lg-8">
                             <textarea id="aerolinea" name="aerolinea" class="form-control"></textarea>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                             <button type="submit" class="btn btn-success w-100 d-block">Crear reserva</button>
                     </div>
